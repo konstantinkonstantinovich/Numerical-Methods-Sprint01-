@@ -1,0 +1,28 @@
+{% extends "main_menu.html" %}
+
+{% block content %}
+
+	<form method="post" action="">
+		<fieldset style="margin-top: 20px ">
+			<select class="form-control" name="op" style="margin-top: 30px;">
+	                <option value="1">Method: Cramer</option>
+	                <option value="2">Method: Gauss</option>
+	                <option value="3">Method: Zeidel</option>
+	                <option value="4">Method: Jordan-Gauss</option>
+	                <option value="5">Method: Jacobi</option>
+	        </select>
+
+	        <p style="margin-top: 30px;">
+	        	<input type="file" name="file">
+	        	<input type="submit" value="Upload">
+	        </p>
+	        <p style="margin-top: 30px;">
+			    <input type="submit" value="Submit">
+			</p>
+		</fieldset>
+	</form>
+
+	{% if pick %}
+		<p>Your pick is {{ pick }}</p>
+	{% endif %}
+{% endblock %}

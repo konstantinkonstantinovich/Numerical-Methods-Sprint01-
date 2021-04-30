@@ -2,16 +2,16 @@
 
 {% block content %}
 
-	<h1>Cramer Method</h1>
+	<h1>Zeidel Method</h1>
 
 
 
-	{% if array %}
-        <p>{{ array }}</p>
-        <p> {{ array1 }}</p>
-
+	{% if result %}
         <p>RESULT: {{ result }}</p>
+     {% else %}
+     	<p>None</p>
     {% endif %}
+
 
 
     <form action="" method="post">
