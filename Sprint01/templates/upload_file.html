@@ -2,7 +2,7 @@
 
 {% block content %}
 
-	<form method="post" action="">
+	<form method="post" action="" enctype=multipart/form-data>
 		<fieldset style="margin-top: 20px ">
 			<select class="form-control" name="op" style="margin-top: 30px;">
 	                <option value="1">Method: Cramer</option>
@@ -14,7 +14,6 @@
 
 	        <p style="margin-top: 30px;">
 	        	<input type="file" name="file">
-	        	<input type="submit" value="Upload">
 	        </p>
 	        <p style="margin-top: 30px;">
 			    <input type="submit" value="Submit">
@@ -24,5 +23,7 @@
 
 	{% if pick %}
 		<p>Your pick is {{ pick }}</p>
+
+		<p>RESULT: {{ result }}</p>
 	{% endif %}
 {% endblock %}

@@ -1,0 +1,31 @@
+{% extends "main_menu.html" %}
+
+{% block content %}
+
+	<h1>Jordan-Gauss Method</h1>
+
+	
+	{% if array %}
+        <p>{{ array }}</p>
+        <p> {{ array1 }}</p>
+
+        <p>RESULT: {{ result }}</p>
+    {% endif %}
+
+
+    <form action="" method="post">
+    	<p>
+	    	<label for="A">A:</label>
+	    	<input type="text" name="A" placeholder="Input coefficient matrix... " width="400px">
+		</p>
+		<p>
+	    	<label for="B">B:</label>
+	    	<input type="text" name="B" placeholder="Input column vector free members..." width="400px">
+		</p>
+		<p>
+	    	<input type="submit" value="Count root">
+		</p>
+    </form>
+
+
+{% endblock %}
