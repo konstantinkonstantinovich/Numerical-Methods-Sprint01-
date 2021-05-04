@@ -2,12 +2,12 @@
 
 {% block content %}
 
-	<h1>Gauss Method</h1>
+	<h1>Jacobi Method</h1>
 
-
-	{% if array %}
-        <p>{{ array }}</p>
-        <p> {{ array1 }}</p>
+	{% if check_matrix %}
+		<p style="font-style: italic;">{{ check_matrix }}<p>
+	{% endif %}
+	{% if result %}
 
         <p>RESULT: {{ result }}</p>
         {% if ch %}
@@ -33,3 +33,4 @@
 
 
 {% endblock %}
+

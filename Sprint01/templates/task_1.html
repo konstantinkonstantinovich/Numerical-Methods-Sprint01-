@@ -4,13 +4,16 @@
 
 	<h1>Cramer Method</h1>
 
-
+	<p style="font-style: bold;">Size: 3</p>
 
 	{% if array %}
         <p>{{ array }}</p>
         <p> {{ array1 }}</p>
 
         <p>RESULT: {{ result }}</p>
+        {% if ch %}
+        	<p style="font-style: bold;"> {{ ch }}</p>
+        {% endif %}
     {% endif %}
 
 
@@ -24,8 +27,10 @@
 		    	<label for="B">B:</label>
 		    	<input type="text" name="B" placeholder="Input column vector free members..." width="400px">
 			</p>
+
+			<p>Check root: <input type="checkbox" name="check"/><p>
 			<p>
-		    	<input type="submit" value="Count root">
+		    	<input type="submit" value="Count">
 			</p>
 		</fieldset>	
     </form>

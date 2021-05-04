@@ -17,14 +17,32 @@ print(line)
 print(list_a)
 print(list_b)
 print('$==================*$#*=================&')
-j = 0
-for i in list_a:
-	print(i)
-	length = len(list_b)
-	i.append(list_b[j])
-	j+=1
-	print(j)
 
+x = [-1., 1., 3.]
+result=list()
+
+for row in range(len(list_a)):
+	line_result = 0.0
+	for col in range(len(list_a)):
+		# print(list_a[row][col], x[col])
+
+		check = list_a[row][col] * x[col]
+		line_result += check
+
+	result.append(line_result)
+
+answer = list()
+for i in range(len(result)):
+	if result[i] == list_b[i]:
+		answer.append(True)
+	else:
+		answer.append(False)
+
+if answer == [True, True, True]:
+	print('Root is correct!')
+
+print(answer)
+print(result)
 
 print(list_a)
 

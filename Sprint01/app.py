@@ -1,5 +1,8 @@
 import os
 import numpy as np
+from numpy import array, zeros, diag, diagflat, dot
+
+import numpy
 
 from flask import Flask, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
@@ -11,8 +14,75 @@ ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 UPLOADS_PATH = join(dirname(realpath(__file__)), 'static/uploads/..')
 
+ITERATION_LIMIT = 1000
+
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
+def check_roots(A, B, x):
+	result=list()
+	answer = list()
+	message = None
+
+	
+	print(B)
+	for row in range(len(A)):
+		line_result = 0.0
+		for col in range(len(A)):
+
+			check = A[row][col] * x[col]
+			line_result += check
+
+		result.append(round(line_result))
+	print(result)
+	for i in range(len(result)):
+		if result[i] == B[i]:
+			answer.append(True)
+		else:
+			answer.append(False)
+
+	if len(answer) == 3:
+
+		if answer == [True, True, True]:
+			message = 'Root is correct!'
+		else:
+			message = 'Root is incorrect!'
+	else:
+		if answer == [True, True]:
+			message = 'Root is correct!'
+		else:
+			message = 'Root is incorrect!'
+
+	return message
+
+
+
+def dd(X):
+    result = None
+    D = np.diag(np.abs(X)) # Find diagonal coefficients
+    S = np.sum(np.abs(X), axis=1) - D # Find row sum without diagonal
+    if np.all(D > S):
+        result = 'Matrix is diagonally dominant!'
+    else:
+        result = 'Matrix is not diagonally dominant!'
+    return result
+
+
+def Jacobi(A, b):
+	x=None
+                                                                                                                                                     
+	if x is None:
+		x = zeros(len(A[0]))   
+
+	D = diag(A)
+	print(D)
+	print(diagflat(D))
+	R = A - diagflat(D) 
+
+	for i in range(ITERATION_LIMIT):
+		x = (b - dot(R,x)) / D
+	return x.tolist()
 
 
 def Jordan_Causs(n, a, b):
@@ -34,32 +104,11 @@ def Jordan_Causs(n, a, b):
 	            for k in range(n+1):
 	                a[j][k] = a[j][k] - ratio * a[i][k]
 
-	# Obtaining Solution
 
 	for i in range(n):
 	    x[i] = a[i][n]/a[i][i]
 
 	return x
-
-# def parse_file(filename):
-# 	list_a = list()
-# 	list_b = list()
-# 	with open('./uploads/'+filename, 'r') as file:
-# 		line = file.read()[3:].split('\n')
-# 		for lin in line:
-# 			new_list = lin.split(' ')
-# 			arr = list()
-# 			for i in new_list:
-# 				arr.append(int(i))
-# 			list_a.append(arr)
-# 		for i in list_a:
-# 			list_b.append(i[-1])
-# 			del i[-1]
-		
-
-# print(line)
-# print(list_a)
-# print(list_b)
 
 
 
@@ -68,7 +117,31 @@ def TakeMatrix(Matrix_a):
 	delta1 = list()
 	for i in array:
 		delta1.append(int(i))
-	delta = [[delta1[0], delta1[1], delta1[2]],[delta1[3], delta1[4], delta1[5]], [delta1[6], delta1[7], delta1[8]]]
+	print(delta1)
+	size = len(delta1)
+	line1 = list()
+	line2 = list()
+	line3 = list()
+	line4 = list()
+	delta = list()
+	if size == 9:
+		for i in delta1[:3]:
+			line1.append(i)
+		delta.append(line1)
+		for i in delta1[3:6]:
+			line2.append(i)
+		delta.append(line2)
+		for i in delta1[6:9]:
+			line3.append(i)
+		delta.append(line3)
+	if size == 4:
+		for i in delta1[:2]:
+			line1.append(i)
+		delta.append(line1)
+		for i in delta1[2:]:
+			line2.append(i)
+		delta.append(line2)
+	# delta = [[delta1[0], delta1[1], delta1[2]],[delta1[3], delta1[4], delta1[5]], [delta1[6], delta1[7], delta1[8]]]
 	return delta
 
 
@@ -117,23 +190,9 @@ def Gauss(A, B):
     return X
 
 
-# def Jordan_Gauss(A, B):
-# 	column = 0
-# 	m = len(B)
-# 	for i in range(m):
-# 		if A[0][0] == 1:
-# 			print('Первое значение первой строки == 1')
-# 		else:
-# 			if A[i][0] == 1:
-# 				 SwapRows(A, B, i, 0)
-# 	while column < len(B):
-# 		for i in range()
-
-
-
-
 
 def Zeidel(A, b):
+
 	x = [.0 for i in range(len(A))]
 	Iteration = 0
 	converge = False
@@ -163,18 +222,25 @@ def Task_One():
 	array = []
 	array1 = []
 	result = []
+	ch = None
 	if request.method == 'POST':
+		check = request.form.get('check')
+		print(check)
 		a = request.form.get('A')
 		b = request.form.get('B')
 		a_list.append(a)
 		b_list.append(b)
 		array = TakeMatrix(a_list)
 		array1 = TakeB(b_list)
+
 		M3 = numpy.array(array) 
 		v3 = numpy.array(array1)
 		result = numpy.linalg.solve(M3, v3)
-
-	return render_template('task_1.html', array=array, array1=array1, result=result)
+		if check == 'on':
+			ch = check_roots(array, array1, result)
+		else:
+			pass
+	return render_template('task_1.html', array=array, array1=array1, result=result, ch=ch)
 
 
 @app.route('/task_2', methods=['post', 'get'])
@@ -184,7 +250,9 @@ def Task_Two():
 	array = []
 	array1 = []
 	result = []
+	ch= None
 	if request.method == 'POST':
+		check = request.form.get('check')
 		a = request.form.get('A')
 		b = request.form.get('B')
 		a_list.append(a)
@@ -192,7 +260,11 @@ def Task_Two():
 		array = TakeMatrix(a_list)
 		array1 = TakeB(b_list)
 		result = Gauss(array, array1)
-	return render_template('task_2.html', array=array, array1=array1, result=result)
+		if check == 'on':
+			ch = check_roots(array, array1, result)
+		else:
+			pass
+	return render_template('task_2.html', array=array, array1=array1, result=result, ch=ch)
 
 
 @app.route('/task_3', methods=['post', 'get'])
@@ -202,7 +274,10 @@ def Task_3():
 	array = []
 	array1 = []
 	result = []
+	ch = None
+	check_matrix = None
 	if request.method == 'POST':
+		check = request.form.get('check')
 		a = request.form.get('A')
 		b = request.form.get('B')
 		if a != None and b != None:
@@ -210,10 +285,15 @@ def Task_3():
 			b_list.append(b)
 			array = TakeMatrix(a_list)
 			array1 = TakeB(b_list)
+			check_matrix = dd(array)
 			result = Zeidel(array, array1)
 		else:
 			result = None
-	return render_template('task_3.html', result=result)
+		if check == 'on':
+			ch = check_roots(array, array1, result)
+		else:
+			pass
+	return render_template('task_3.html', result=result, check_matrix=check_matrix, ch=ch)
 
 
 @app.route('/task_4', methods=['post', 'get'])
@@ -223,7 +303,9 @@ def Task_4():
 	array = []
 	array1 = []
 	result = []
+	ch = None
 	if request.method == 'POST':
+		check = request.form.get('check')
 		a = request.form.get('A')
 		b = request.form.get('B')
 		a_list.append(a)
@@ -231,8 +313,37 @@ def Task_4():
 		array = TakeMatrix(a_list)
 		array1 = TakeB(b_list)
 		result = Jordan_Causs(3, array, array1)
-	return render_template('task_4.html', array=array, array1=array1, result=result)
+		if check == 'on':
+			ch = check_roots(array, array1, result)
+		else:
+			pass
+	return render_template('task_4.html', array=array, array1=array1, result=result, ch=ch)
 
+
+@app.route('/task_5', methods=['post', 'get'])
+def Task_5():
+	a_list = list()
+	b_list = list()
+	array = []
+	array1 = []
+	result = []
+	ch = None
+	check_matrix = None
+	if request.method == 'POST':
+		check = request.form.get('check')
+		a = request.form.get('A')
+		b = request.form.get('B')
+		a_list.append(a)
+		b_list.append(b)
+		array = TakeMatrix(a_list)
+		array1 = TakeB(b_list)
+		check_matrix = dd(array)
+		result = Jacobi(array, array1)
+		if check == 'on':
+			ch = check_roots(array, array1, result)
+		else:
+			pass
+	return render_template('task_5.html', result=result, check_matrix=check_matrix, ch=ch)
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -258,7 +369,7 @@ def Read_From_File():
 					new_list = lin.split(' ')
 					arr = list()
 					for i in new_list:
-						arr.append(int(i))
+						arr.append(float(i))
 					list_a.append(arr)
 				for i in list_a:
 					list_b.append(i[-1])
@@ -271,11 +382,13 @@ def Read_From_File():
 			result = numpy.linalg.solve(M3, v3)
 		if pick == '2':
 			result = Gauss(list_a, list_b)
-			print(result)
 		if pick == '3':
 			result = Zeidel(list_a, list_b)
 		if pick == '4':
 			result = Jordan_Causs(3, list_a, list_b)
+		if pick == '5':
+			result = Jacobi(list_a, list_b)
+			print(result)
 	return render_template('upload_file.html', pick=pick, list_a=list_a, list_b=list_b, result=result)
 
 
