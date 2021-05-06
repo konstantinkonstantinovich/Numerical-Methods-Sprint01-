@@ -1,0 +1,37 @@
+{% extends "main_menu.html" %}
+
+{% block content %}
+	<h1>Simson method</h1>
+	<style>
+		.form_select {
+			width: 37.5%;
+			height: 30px;
+			text-align: center;
+			outline: none;
+			margin: 10px;
+		}
+	</style>
+	<form action="" method="post">
+		<select class="form_select" name="op">
+			<option value="1">f(x) = 1/ln(x)</option>
+	        <option value="2">f(x) = 4x + 3</option>
+		</select>
+		<p>
+			<label for="A">A:</label>
+		    <input type="number" name="A" placeholder="Input min length... " width="400px">
+			<label for="B">B:</label>
+		    <input type="number" name="B" placeholder="Input max length... " width="400px">
+		<p>
+		<p>			
+			<label for="N">N:</label>
+		    <input type="number" name="N" placeholder="Input number of steps... " width="400px">
+		</p>
+		<p>
+		    <input type="submit" value="Calculate">
+		</p>
+
+	</form>
+	{% if result %}
+		<p>The result is {{ result }}</p>
+	{% endif %}
+{% endblock %}

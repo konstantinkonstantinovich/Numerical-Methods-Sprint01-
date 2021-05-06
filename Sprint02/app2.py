@@ -133,6 +133,24 @@ def trapezium():
 	return render_template('trapezium.html', result=result)
 
 
+@app.route('/simson_method',  methods=['post', 'get'])
+def simson():
+	result = None
+	if request.method == 'POST':
+		option = request.form.get('op')
+		a = request.form.get('A')
+		b = request.form.get('B')
+		N = request.form.get('N')
+		A = int(a)
+		B = int(b)
+		n = int(N)
+		if option == '1':
+			result = simson_method(A, B, n, lambda x: 1/math.log(x))
+		if option == '2':
+			result = simson_method(A, B, n, lambda x: 4*x + 3)
+	return render_template('simson.html', result=result)
+
+
 @app.route('/')
 def main_menu():
     return render_template('main_menu.html')
