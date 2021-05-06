@@ -57,7 +57,7 @@ print('===============@#@===============')
 print(s1)
 print(central_rectangle(lambda x: 1/math.log(x), 2, 5, 5))
 print('===============@#trapezium@===============')
-print(integrate(lambda x: 1/math.log(x) ,2, 5, 10))
+print(integrate(lambda x: 1/math.log(x) ,2, 5, 5))
 print(trapezium_method(lambda x: 1/math.log(x), 2, 5, 10))
 print(sympson( 2, 5, 5, lambda x: 1/math.log(x)))
 

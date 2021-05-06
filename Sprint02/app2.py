@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 import math
 
+from numpy import arange
+
 
 app = Flask(__name__)
 
@@ -93,6 +95,42 @@ def rigth_rect():
 		if option == '2':
 			result = rigth_rectangle(lambda x: 4*x + 3, A, B, n)
 	return render_template('rigth.html', result=result)
+
+
+@app.route('/central_rect',  methods=['post', 'get'])
+def central_rect():
+	result = None
+	if request.method == 'POST':
+		option = request.form.get('op')
+		a = request.form.get('A')
+		b = request.form.get('B')
+		N = request.form.get('N')
+		A = int(a)
+		B = int(b)
+		n = int(N)
+		if option == '1':
+			result = central_rectangle(lambda x: 1/math.log(x), A, B, n)
+		if option == '2':
+			result = central_rectangle(lambda x: 4*x + 3, A, B, n)
+	return render_template('central.html', result=result)
+
+
+@app.route('/trapezium',  methods=['post', 'get'])
+def trapezium():
+	result = None
+	if request.method == 'POST':
+		option = request.form.get('op')
+		a = request.form.get('A')
+		b = request.form.get('B')
+		N = request.form.get('N')
+		A = int(a)
+		B = int(b)
+		n = int(N)
+		if option == '1':
+			result = trapezium_method(lambda x: 1/math.log(x), A, B, n)
+		if option == '2':
+			result = trapezium_method(lambda x: 4*x + 3, A, B, n)
+	return render_template('trapezium.html', result=result)
 
 
 @app.route('/')
