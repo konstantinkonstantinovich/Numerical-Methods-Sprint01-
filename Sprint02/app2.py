@@ -63,7 +63,6 @@ def simson_method(a, b, n, function):
 @app.route('/left_rect',  methods=['post', 'get'])
 def left_rect():
 	result = None
-	op = None
 	if request.method == 'POST':
 		option = request.form.get('op')
 		a = request.form.get('A')
@@ -77,6 +76,23 @@ def left_rect():
 		if option == '2':
 			result = left_rectangle(lambda x: 4*x + 3, A, B, n)
 	return render_template('left_rect.html', result=result)
+
+@app.route('/rigth_rect',  methods=['post', 'get'])
+def rigth_rect():
+	result = None
+	if request.method == 'POST':
+		option = request.form.get('op')
+		a = request.form.get('A')
+		b = request.form.get('B')
+		N = request.form.get('N')
+		A = int(a)
+		B = int(b)
+		n = int(N)
+		if option == '1':
+			result = rigth_rectangle(lambda x: 1/math.log(x), A, B, n)
+		if option == '2':
+			result = rigth_rectangle(lambda x: 4*x + 3, A, B, n)
+	return render_template('rigth.html', result=result)
 
 
 @app.route('/')
