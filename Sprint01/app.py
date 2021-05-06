@@ -24,8 +24,8 @@ def check_roots(A, B, x):
 	result=list()
 	answer = list()
 	message = None
-
-	
+	print(x)
+	print(A)
 	print(B)
 	for row in range(len(A)):
 		line_result = 0.0
@@ -41,7 +41,7 @@ def check_roots(A, B, x):
 			answer.append(True)
 		else:
 			answer.append(False)
-
+		print(answer)
 	if len(answer) == 3:
 
 		if answer == [True, True, True]:
