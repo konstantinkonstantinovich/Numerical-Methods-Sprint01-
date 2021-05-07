@@ -1,14 +1,5 @@
 import numpy as np
 
-def dd(X):
-    result = None
-    D = np.diag(np.abs(X)) # Find diagonal coefficients
-    S = np.sum(np.abs(X), axis=1) - D # Find row sum without diagonal
-    if np.all(D > S):
-        result = 'Matrix is diagonally dominant!'
-    else:
-        result = 'Matrix is not diagonally dominant!'
-    return result
 
 
 ITERATION_LIMIT = 1000

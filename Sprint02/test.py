@@ -1,6 +1,7 @@
 import math
 from numpy import arange
 
+from matplotlib.pyplot import show, grid, plot, savefig, figsize
 
 # def f(x):
 # 	return 1 / math.log(x)
@@ -26,14 +27,14 @@ def central_rectangle(f, a, b, n):
 
 def integrate(f, min_lim, max_lim, n):
 	integral = 0.0
-	step = (max_lim - min_lim) / n
+	step = (max_lim - min_lim) / float(n)
 	for x in arange(min_lim, max_lim-step, step):
 		integral += step*(f(x) + f(x + step)) / 2
 	return integral
 
 
 def trapezium_method(f, a, b, n):
-	h = (b - a) / n
+	h = (b - a) / float(n)
 	sum = 0.0
 	for x in arange(a, b-h, h):
 		sum += h*(f(x) + f(x + h)) / 2
@@ -41,7 +42,7 @@ def trapezium_method(f, a, b, n):
 
  
 def simson_method(a, b, n, function):
-    h = (b - a) / (2 * n)
+    h = (b - a) / (2 * float(n))
  
     tmp_sum = float(function(a)) + float(function(b))
     for i in range(1, 2 * n):
@@ -52,6 +53,44 @@ def simson_method(a, b, n, function):
  
     return tmp_sum * h / 3
 
+
+
+def euler_method(f, a, b, y0, N):
+	h = (b - a) / float(N)
+	x0 = a
+	f1 = f(x0, y0)
+	hf = h * f1
+	y1 = 0.0
+	y_list = list()
+	x_list = list()
+	x_list.append(x0)
+	y_list.append(y0)
+	for i in range(1, N+1):
+		print('i', i)
+		x0+=h 
+		print('x=',x0)
+		x_list.append(x0)
+		y1 = y0 + hf
+		print('y=', y1)
+		f2 = f(x0, y1)
+		y_list.append(y1)
+		print('f(x,y) = ',f2)
+		hf1 = h * f2
+		print('hf(x, y)',hf1)
+		print('===iter===')
+		y0 = y1
+		hf = hf1
+
+	plot(x_list, y_list, 'r--')
+	grid()
+	savefig('grafic.jpg')
+	show()
+	return y_list
+
+
+
+
+
 s1 = left_rectangle(lambda x: 1/math.log(x), 2, 5, 5)
 print('===============@#@===============')
 print(s1)
@@ -59,5 +98,9 @@ print(central_rectangle(lambda x: 1/math.log(x), 2, 5, 5))
 print('===============@#trapezium@===============')
 print(integrate(lambda x: 1/math.log(x) ,2, 5, 5))
 print(trapezium_method(lambda x: 1/math.log(x), 2, 5, 10))
-print(sympson( 2, 5, 5, lambda x: 1/math.log(x)))
+# print(sympson( 2, 5, 5, lambda x: 1/math.log(x)))
+print('===============@#euler@===============')
+print(euler_method(lambda x, y: math.pow(x, 2) - 2*y, 0, 1, 1, 10))
+
+
 
