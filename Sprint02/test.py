@@ -1,7 +1,7 @@
 import math
 from numpy import arange
 
-from matplotlib.pyplot import show, grid, plot, savefig, figsize
+from matplotlib.pyplot import show, grid, plot, savefig
 
 # def f(x):
 # 	return 1 / math.log(x)
@@ -88,7 +88,50 @@ def euler_method(f, a, b, y0, N):
 	return y_list
 
 
+def runge_kutta_fourth(f, a,b, y_0,n):
+    h= (b-a) / float(n)
+    y_list = list()
+    y_list.append(y_0)
+    for i in range (0, n):
+        k1=h*f(a,y_0)
+        k2=h*f(a+h/2,y_0+k1/2)
+        k3=h*f(a+h/2,y_0+k2/2)
+        k4=h*f(a+h,y_0+k3)
+        y1=y_0+ (k1+2*k2+2*k3+k4) /6
+        y_list.append(y1)
+        a=a+h
+        y_0=y1
+    return y_list
 
+
+def runge_kutta_second(f, a,b, y_0,n):
+    h= (b-a) / float(n)
+    y_list = list()
+    y_list.append(y_0)
+    for i in range (0, n):
+        k1=h*f(a,y_0)
+        k2=h*f(a+h/2,y_0+k1/2)
+        y1=y_0+ k2
+        y_list.append(y1)
+        a=a+h
+        y_0=y1
+    return y_list
+
+
+
+def runge_kutta_third(f, a,b, y_0,n):
+    h= (b-a) / float(n)
+    y_list = list()
+    y_list.append(y_0)
+    for i in range (0, n):
+        k1=h*f(a,y_0)
+        k2=h*f(a+h/2,y_0+k1/2)
+        k3=h*f(a+h/2,y_0+k2/2)
+        y1=y_0+ (k1+2*k2+2*k3) /6
+        y_list.append(y1)
+        a=a+h
+        y_0=y1
+    return y_list
 
 
 s1 = left_rectangle(lambda x: 1/math.log(x), 2, 5, 5)
@@ -101,6 +144,9 @@ print(trapezium_method(lambda x: 1/math.log(x), 2, 5, 10))
 # print(sympson( 2, 5, 5, lambda x: 1/math.log(x)))
 print('===============@#euler@===============')
 print(euler_method(lambda x, y: math.pow(x, 2) - 2*y, 0, 1, 1, 10))
+print('===============@#runge_kutta@===============')
+print(runge_kutta_fourth(lambda x, y: math.pow(x, 2) - 2*y, 0, 1, 1, 10))
+print(runge_kutta_second(lambda x, y: math.pow(x, 2) - 2*y, 0, 1, 1, 10))
 
 
 

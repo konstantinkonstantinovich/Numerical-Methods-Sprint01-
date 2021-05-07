@@ -96,6 +96,52 @@ def euler_method(f, a, b, y0, N):
 	return y_list
 
 
+def runge_kutta_fourth(f, a,b, y_0,n):
+    h= (b-a) / float(n)
+    y_list = list()
+    y_list.append(y_0)
+    for i in range (0, n):
+        k1=h*f(a,y_0)
+        k2=h*f(a+h/2,y_0+k1/2)
+        k3=h*f(a+h/2,y_0+k2/2)
+        k4=h*f(a+h,y_0+k3)
+        y1=y_0+ (k1+2*k2+2*k3+k4) /6
+        y_list.append(y1)
+        a=a+h
+        y_0=y1
+    return y_list
+
+
+def runge_kutta_second(f, a,b, y_0,n):
+    h= (b-a) / float(n)
+    y_list = list()
+    y_list.append(y_0)
+    for i in range (0, n):
+        k1=h*f(a,y_0)
+        k2=h*f(a+h/2,y_0+k1/2)
+        y1=y_0+ (k1+2*k2)/6
+        y_list.append(y1)
+        a=a+h
+        y_0=y1
+    return y_list
+
+
+def runge_kutta_third(f, a,b, y_0,n):
+    h= (b-a) / float(n)
+    y_list = list()
+    y_list.append(y_0)
+    for i in range (0, n):
+        k1=h*f(a,y_0)
+        k2=h*f(a+h/2,y_0+k1/2)
+        k3=h*f(a+h/2,y_0+k2/2)
+        y1=y_0+ (k1+2*k2+2*k3) /6
+        y_list.append(y1)
+        a=a+h
+        y_0=y1
+    return y_list
+
+
+
 @app.route('/left_rect',  methods=['post', 'get'])
 def left_rect():
 	result = None
@@ -112,6 +158,7 @@ def left_rect():
 		if option == '2':
 			result = left_rectangle(lambda x: 4*x + 3, A, B, n)
 	return render_template('left_rect.html', result=result)
+
 
 @app.route('/rigth_rect',  methods=['post', 'get'])
 def rigth_rect():
@@ -219,9 +266,9 @@ def second():
 		n = int(N)
 		Y0 = int(y)
 		if option == '1':
-			result = euler_method(lambda x, y: math.pow(x, 2) - 2*y, A, B, Y0 ,n)
+			result = runge_kutta_second(lambda x, y: math.pow(x, 2) - 2*y, A, B, Y0 ,n)
 		if option == '2':
-			result = euler_method(lambda x, y: x + y, A, B, Y0, n)
+			result = runge_kutta_second(lambda x, y: x + y, A, B, Y0, n)
 	return render_template('second_order.html', result=result)
 
 
@@ -239,9 +286,9 @@ def third():
 		n = int(N)
 		Y0 = int(y)
 		if option == '1':
-			result = euler_method(lambda x, y: math.pow(x, 2) - 2*y, A, B, Y0 ,n)
+			result = runge_kutta_third(lambda x, y: math.pow(x, 2) - 2*y, A, B, Y0 ,n)
 		if option == '2':
-			result = euler_method(lambda x, y: x + y, A, B, Y0, n)
+			result = runge_kutta_third(lambda x, y: x + y, A, B, Y0, n)
 	return render_template('third_order.html', result=result)
 
 
@@ -259,10 +306,46 @@ def fourth():
 		n = int(N)
 		Y0 = int(y)
 		if option == '1':
-			result = euler_method(lambda x, y: math.pow(x, 2) - 2*y, A, B, Y0 ,n)
+			result = runge_kutta_fourth(lambda x, y: math.pow(x, 2) - 2*y, A, B, Y0 ,n)
 		if option == '2':
-			result = euler_method(lambda x, y: x + y, A, B, Y0, n)
+			result = runge_kutta_fourth(lambda x, y: x + y, A, B, Y0, n)
 	return render_template('fourth_order.html', result=result)
+
+
+@app.route('/free_table',  methods=['post', 'get'])
+def ft():
+	result = list()
+	if request.method == 'POST':
+		option = request.form.get('op')
+		a = request.form.get('A')
+		b = request.form.get('B')
+		N = request.form.get('N')
+		A = int(a)
+		B = int(b)
+		n = int(N)
+		if option == '1':
+			res = left_rectangle(lambda x: 1/math.log(x), A, B, n)
+			result.append(res)
+			res1 = rigth_rectangle(lambda x: 1/math.log(x), A, B, n)
+			result.append(res1)
+			res2 = central_rectangle(lambda x: 1/math.log(x), A, B, n)
+			result.append(res2)
+			res3 = trapezium_method(lambda x: 1/math.log(x), A, B, n)
+			result.append(res3)
+			res4 = simson_method(A, B, n, lambda x: 1/math.log(x))
+			result.append(res4)
+		if option == '2':
+			res = left_rectangle(lambda x: 4*x + 3, A, B, n)
+			result.append(res)
+			res1 = rigth_rectangle(lambda x: 4*x + 3, A, B, n)
+			result.append(res1)
+			res2 = central_rectangle(lambda x: 4*x + 3, A, B, n)
+			result.append(res2)
+			res3 = trapezium_method(lambda x: 4*x + 3, A, B, n)
+			result.append(res3)
+			res4 = simson_method(A, B, n, lambda x: 4*x + 3)
+			result.append(res4)
+	return render_template('free_table.html', result=result)
 
 
 @app.route('/')

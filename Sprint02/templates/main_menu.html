@@ -60,7 +60,7 @@ background-color: #343a40!important;
 }
 </style>
 <div class="navbar navbar-expand-md navbar-dark bg-dark mb-4" role="navigation">
-    <a class="navbar-brand" href="#">Sprint02</a>
+    <a class="navbar-brand" href="{{ url_for('ft') }}">Sprint02</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -86,13 +86,13 @@ background-color: #343a40!important;
             </li>
             <li class="nav-item">
                 <div class="dropdown">
-                  <button class="dropbtn">Difura <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 -3 16 16">
+                  <button class="dropbtn">Runge - Kuttas <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 -3 16 16">
   <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
 </svg></button>
                   <div class="dropdown-content">
-                  <a href="{{ url_for('second') }}">Runge - Kuttas of the II order</a>
-                  <a href="{{ url_for('third') }}">Runge - Kuttas of the III order</a>
-                  <a href="{{ url_for('fourth') }}">Runge - Kuttas of the IV order</a>
+                  <a href="{{ url_for('second') }}">Runge - Kutta of the II order</a>
+                  <a href="{{ url_for('third') }}">Runge - Kutta of the III order</a>
+                  <a href="{{ url_for('fourth') }}">Runge - Kutta of the IV order</a>
                   </div>
                 </div>
             </li>
