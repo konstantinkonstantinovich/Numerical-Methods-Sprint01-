@@ -3,6 +3,7 @@ import math
 
 from numpy import arange
 
+# import pandas as pd
 
 # from matplotlib.pyplot import show, grid, plot, savefig, figsize
 
@@ -93,11 +94,14 @@ def euler_method(f, a, b, y0, N):
 	# plot(x_list, y_list, 'r--')
 	# grid()
 	# show()
-	return y_list
+	print(x_list)
+	return y_list, x_list
 
 
 def runge_kutta_fourth(f, a,b, y_0,n):
-    h= (b-a) / float(n)
+    h= (b-a) / n
+    x_list = list()
+    x_list.append(a)
     y_list = list()
     y_list.append(y_0)
     for i in range (0, n):
@@ -108,13 +112,16 @@ def runge_kutta_fourth(f, a,b, y_0,n):
         y1=y_0+ (k1+2*k2+2*k3+k4) /6
         y_list.append(y1)
         a=a+h
+        x_list.append(a)
         y_0=y1
-    return y_list
+    return y_list, x_list
 
 
 def runge_kutta_second(f, a,b, y_0,n):
-    h= (b-a) / float(n)
+    h= (b-a) / n
     y_list = list()
+    x_list = list()
+    x_list.append(a)
     y_list.append(y_0)
     for i in range (0, n):
         k1=h*f(a,y_0)
@@ -122,13 +129,16 @@ def runge_kutta_second(f, a,b, y_0,n):
         y1=y_0+ (k1+2*k2)/6
         y_list.append(y1)
         a=a+h
+        x_list.append(a)
         y_0=y1
-    return y_list
+    return y_list, x_list
 
 
 def runge_kutta_third(f, a,b, y_0,n):
-    h= (b-a) / float(n)
+    h= (b-a) / n
     y_list = list()
+    x_list = list()
+    x_list.append(a)
     y_list.append(y_0)
     for i in range (0, n):
         k1=h*f(a,y_0)
@@ -137,8 +147,9 @@ def runge_kutta_third(f, a,b, y_0,n):
         y1=y_0+ (k1+2*k2+2*k3) /6
         y_list.append(y1)
         a=a+h
+        x_list.append(a)
         y_0=y1
-    return y_list
+    return y_list, x_list
 
 
 
@@ -235,6 +246,7 @@ def simson():
 @app.route('/euler_method',  methods=['post', 'get'])
 def euler():
 	result = None
+	h=None
 	if request.method == 'POST':
 		option = request.form.get('op')
 		a = request.form.get('A')
@@ -245,16 +257,22 @@ def euler():
 		B = int(b)
 		n = int(N)
 		Y0 = int(y)
+		h = (B - A) / n
 		if option == '1':
 			result = euler_method(lambda x, y: math.pow(x, 2) - 2*y, A, B, Y0 ,n)
+
+
 		if option == '2':
 			result = euler_method(lambda x, y: x + y, A, B, Y0, n)
-	return render_template('euler.html', result=result)
+
+	return render_template('euler.html', result=result, title='Euler method grahp!', max=1,h=h)
+
 
 
 @app.route('/second_order',  methods=['post', 'get'])
 def second():
 	result = None
+	h=None
 	if request.method == 'POST':
 		option = request.form.get('op')
 		a = request.form.get('A')
@@ -265,16 +283,19 @@ def second():
 		B = int(b)
 		n = int(N)
 		Y0 = int(y)
+		h = (B - A) / n
 		if option == '1':
 			result = runge_kutta_second(lambda x, y: math.pow(x, 2) - 2*y, A, B, Y0 ,n)
+			print(result[0])
 		if option == '2':
 			result = runge_kutta_second(lambda x, y: x + y, A, B, Y0, n)
-	return render_template('second_order.html', result=result)
+	return render_template('second_order.html', result=result, title='The grahp!', max=1, h=h)
 
 
 @app.route('/third_order',  methods=['post', 'get'])
 def third():
 	result = None
+	h=None
 	if request.method == 'POST':
 		option = request.form.get('op')
 		a = request.form.get('A')
@@ -285,16 +306,18 @@ def third():
 		B = int(b)
 		n = int(N)
 		Y0 = int(y)
+		h = (B - A) / n
 		if option == '1':
 			result = runge_kutta_third(lambda x, y: math.pow(x, 2) - 2*y, A, B, Y0 ,n)
 		if option == '2':
 			result = runge_kutta_third(lambda x, y: x + y, A, B, Y0, n)
-	return render_template('third_order.html', result=result)
+	return render_template('third_order.html', result=result, title='The grahp!', max=1, h=h)
 
 
 @app.route('/fourth_order',  methods=['post', 'get'])
 def fourth():
 	result = None
+	h=None
 	if request.method == 'POST':
 		option = request.form.get('op')
 		a = request.form.get('A')
@@ -305,11 +328,12 @@ def fourth():
 		B = int(b)
 		n = int(N)
 		Y0 = int(y)
+		h = (B - A) / n
 		if option == '1':
 			result = runge_kutta_fourth(lambda x, y: math.pow(x, 2) - 2*y, A, B, Y0 ,n)
 		if option == '2':
 			result = runge_kutta_fourth(lambda x, y: x + y, A, B, Y0, n)
-	return render_template('fourth_order.html', result=result)
+	return render_template('fourth_order.html', result=result, title='The grahp!', max=1, h=h)
 
 
 @app.route('/free_table',  methods=['post', 'get'])
@@ -346,6 +370,23 @@ def ft():
 			res4 = simson_method(A, B, n, lambda x: 4*x + 3)
 			result.append(res4)
 	return render_template('free_table.html', result=result)
+
+@app.route('/line')
+def line():
+	labels = [
+    'JAN', 'FEB', 'MAR', 'APR',
+    'MAY', 'JUN', 'JUL', 'AUG',
+    'SEP', 'OCT', 'NOV', 'DEC'
+	]
+
+	values = [
+	    967.67, 1190.89, 1079.75, 1349.19,
+	    2328.91, 2504.28, 2873.83, 4764.87,
+	    4349.29, 6458.30, 9907, 16297
+	]
+	line_labels=labels
+	line_values=values
+	return render_template('temp.html', title='Bitcoin Monthly Price in USD', max=17000, labels=line_labels, values=line_values)
 
 
 @app.route('/')
