@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+	<title>Laba 1 DM</title>
+</head>
+<body>
+	<style>
+		#main{
+			margin: 0 auto;
+			border: 2px solid grey;
+			border-radius: 30px;
+			width: 500px;
+			height: 400px;
+			background-color: lightgrey;
+
+		}
+		h1 {
+			text-align: center;
+
+		}
+		p {
+			margin-left: 28px;
+		}
+		input {
+
+			background-color: lightgrey;
+			width: 400px;
+			height: 50px;
+			border-radius: 25px;
+			outline: none;
+		}
+		span {
+			margin: 50px;
+		}
+		select {
+			width: 400px;
+			margin-left: 50px;
+			height: 50px;
+			border-radius: 25px;
+			margin-bottom: 20px; 
+			outline: none;
+		}
+		form {
+			height: 400px;
+		}
+		h2 {
+			text-align: center;
+		}
+		#result {
+			position: absolute;
+		}
+	</style>
+	
+	<h1>Laba 1</h1>
+	<div id="main">
+		<form action="" method="post">
+			<h2>Input two sets!</h2>
+			<p>
+				<label for="A">A:</label>
+			    <input type="text" name="A" placeholder="Enter a set A..." width="400px">
+			</p>
+			<p>    
+				<label for="B">B:</label>
+			    <input type="text" name="B" placeholder="Enter a set B... " width="400px">
+			</p>
+			<select class="form_select" name="op">
+				<option value="1">∪ - An association</option>
+		        <option value="2">⋂ - Crossing</option>
+			</select>
+			<span>
+				<input type="submit" value="Calculate">
+			</span>
+			</div>
+		</form>
+		<div id="result">
+			{% if a and b %} 
+				<p>Set A:{{ a }}</p>
+				<p>Set B:{{ b }}</p>
+			{% endif %}
+		</div>
+	</div>
+</body>
+</html>

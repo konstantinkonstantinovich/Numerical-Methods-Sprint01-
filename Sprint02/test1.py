@@ -1,26 +1,37 @@
-from __future__ import division
-import numpy as np
-import matplotlib.pyplot as plt
+import operator
+def merge_sort(L, compare=operator.lt):
+    if len(L) < 2:
+        return L[:]
+    else:
+        middle = int(len(L) / 2)
+        left = merge_sort(L[:middle], compare)
+        right = merge_sort(L[middle:], compare)
+        return merge(left, right, compare)
 
-# Concentration over time
-N = lambda t: N0 * np.exp(-k * t)
-# dN/dt
-def dx_dt(x):
-    return -k * x
 
-k = .5
-h = 0.001
-N0 = 100.
 
-t = np.arange(0, 10, h)
-y = np.zeros(len(t))
+def merge(left, right, compare):
+    result = []
+    i, j = 0, 0
+    while i < len(left) and j < len(right):
+        if compare(left[i], right[j]):
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+    while i < len(left):
+        result.append(left[i])
+        i += 1
+    while j < len(right):
+        result.append(right[j])
+        j += 1
+    return result
 
-y[0] = N0
-for i in range(1, len(t)):
-    # Euler method
-    y[i] = y[i-1] + dx_dt(y[i-1]) * h
 
-max_error = abs(y-N(t)).max()
-print ('Max difference between the exact solution and Euler approximation with step size h=0.001:')
+    
 
-print ('{0:.15}'.format(max_error))
+
+
+array = [78, 41, 4, 27, 3, 27, 8, 39, 19, 34, 6, 41, 13, 52, 16]
+print(merge_sort(array))
