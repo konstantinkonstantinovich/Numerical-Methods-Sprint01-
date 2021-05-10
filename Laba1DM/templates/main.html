@@ -49,8 +49,15 @@
 			text-align: center;
 		}
 		#result {
-			position: absolute;
+			margin: 0 auto;
+			width: 500px;
+			border-radius: 30px;
+			border: 2px solid grey;
 		}
+		img {
+			margin-left: 140px;
+		}
+
 	</style>
 	
 	<h1>Laba 1</h1>
@@ -66,8 +73,13 @@
 			    <input type="text" name="B" placeholder="Enter a set B... " width="400px">
 			</p>
 			<select class="form_select" name="op">
-				<option value="1">∪ - An association</option>
-		        <option value="2">⋂ - Crossing</option>
+				<option value="1">∪ - An association(A∪B)</option>
+		        <option value="2">⋂ - Crossing(A⋂B)</option>
+		        <option value="3">⊂ - entry(A⊂B)</option>
+				<option value="4">⊂ - entry(B⊂A)</option>
+				<option value="5">\ - difference(A\B)</option>
+				<option value="6">\ - difference(B\A)</option>
+				<option value="7">Δ - Symmetrical difference(BΔA)</option>
 			</select>
 			<span>
 				<input type="submit" value="Calculate">
@@ -75,9 +87,12 @@
 			</div>
 		</form>
 		<div id="result">
-			{% if a and b %} 
+			{% if result %} 
+				<h2>{{ title }}</h2>
 				<p>Set A:{{ a }}</p>
 				<p>Set B:{{ b }}</p>
+				<p>The result set is C:{{ result }}</p>
+				<img src="{{ img }}">
 			{% endif %}
 		</div>
 	</div>
